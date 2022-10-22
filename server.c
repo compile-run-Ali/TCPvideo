@@ -58,18 +58,50 @@ int main(){
 
 	printf("Connection accepted from %s:%d\n", inet_ntoa(new_addr.sin_addr), ntohs(new_addr.sin_port));
 
-	// // receive file
-	// FILE *fp;
-	// char *filename = "test.txt";
-	// fp = fopen(filename, "w");
-	// if(fp == NULL) {
-	// 	perror("File Error");
-	// 	exit(1);
-	// }
+	
+	
 
-	bzero(buffer, BUFFER_SIZE);
-	int words;
+	FILE *file_pointer;
+	char *filename = "sample.mp4";
+	file_pointer = fopen(filename, "rb");
+	if(file_pointer == NULL) {
+		perror("Error: Could not open fil,e");
+		exit(1);
+	}
 
+	printf("Reading data from file and sending it...\n");
+	while(1) {
+		// read data from file and send it
+		// transfer data to buffer
+		int bytes_read = fread(buffer, 1, BUFFER_SIZE, file_pointer);
+
+		
+		// send data
+		if(send(new_sock, buffer, bytes_read, 0) < 0) {
+			perror("Error while sending file");
+			exit(1);
+		}
+
+		// check if end of file
+		if(bytes_read < BUFFER_SIZE) {
+			if(feof(file_pointer)) {
+				printf("File end reached.\n");
+			}
+			if(ferror(file_pointer)) {
+				printf("Read error.\n");
+			}
+
+			break;
+
+		}
+
+	}
+
+	printf("File sent successfully.\n");
+
+	fclose(file_pointer);
 
 	return 0;
+
 }
+
