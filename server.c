@@ -8,7 +8,7 @@
 #define BUFFER_SIZE 1024
 
 int main(){
-	char *ip = "127.0.0.1";
+	char ip[] = "127.0.0.1";
 	int port = 8080;
 	int e;
 
@@ -62,7 +62,7 @@ int main(){
 	
 
 	FILE *file_pointer;
-	char *filename = "sample.mp4";
+	char filename[] = "sample.mp4";
 	file_pointer = fopen(filename, "rb");
 	if(file_pointer == NULL) {
 		perror("Error: Could not open fil,e");

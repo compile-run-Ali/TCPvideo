@@ -8,7 +8,7 @@
 #define BUFFER_SIZE 1024
 
 int main(){
-    char *ip = "127.0.0.1";
+    char ip[] = "127.0.0.1";
     int port = 8080;
     int e;
 
