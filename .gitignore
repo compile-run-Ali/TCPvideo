@@ -1,5 +1,5 @@
 testClient.c
 testServer.c
 *.out
-*.mp4
+received_file.mp4
 con.md
