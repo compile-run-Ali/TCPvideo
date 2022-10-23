@@ -1,3 +1,4 @@
+// include headerfiles which are needed
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,7 +26,7 @@ int main(){
 		perror("Socket Error");
 		exit(1);
 	}
-	printf("Server socket created.\n");
+	printf("Socket for server created.\n");
 	 
 	 // assign IP, PORT etc
 	server_addr.sin_family = AF_INET;
@@ -34,21 +35,26 @@ int main(){
 	server_addr.sin_port = htons(port);
 	server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	
-
+	// bind the socket to the set address
 	e = bind(sock_fd, (struct sockaddr*)&server_addr, sizeof(server_addr));
 	if(e < 0) {
-		perror("Bind Error");
+		perror("Error while binding");
 		exit(1);
 	}
+
+	// listen for connection and queu up to 5 requests
 
 	e = listen(sock_fd, 5);
 	if(e < 0) {
-		perror("Listen Error");
+		perror("Error while listening");
 		exit(1);
 	}
 
+
 	printf("Listening on port %d...\n", port);
 
+
+	// when connection is established, accept the connection
 	addr_size = sizeof(new_addr);
 	new_sock = accept(sock_fd, (struct sockaddr*)&new_addr, &addr_size);
 	if(new_sock < 0) {
@@ -61,6 +67,7 @@ int main(){
 	
 	
 
+   // read file sample.mp4
 	FILE *file_pointer;
 	char filename[] = "sample.mp4";
 	file_pointer = fopen(filename, "rb");
@@ -76,13 +83,13 @@ int main(){
 		int bytes_read = fread(buffer, 1, BUFFER_SIZE, file_pointer);
 
 		
-		// send data
+		// send file data to the client using the new socket
 		if(send(new_sock, buffer, bytes_read, 0) < 0) {
 			perror("Error while sending file");
 			exit(1);
 		}
 
-		// check if end of file
+		// if end of file reached or an error occurs exit the loop
 		if(bytes_read < BUFFER_SIZE) {
 			if(feof(file_pointer)) {
 				printf("File end reached.\n");
