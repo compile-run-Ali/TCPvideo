@@ -109,9 +109,12 @@ int main(){
 	// close file
 	fclose(file_pointer);
 	// close connection and socket when file end reached
+	printf("File closed.\n");
+
+
 	close(new_sock);
 	close(sock_fd);
-	
+	printf("Socket closed.\n");
 	printf("File sent successfully.\n");
 
 	

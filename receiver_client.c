@@ -60,17 +60,30 @@ int main(){
     while((recieved_bytes = read(sock_fd, recv_buff, 1024)) > 0)
     {   i++;
         fwrite(recv_buff, 1,recieved_bytes,file_pointer);
-    }
+    }   
+
+    printf("End of file reached\n");
 
     // number of segments recieved
-    printf("Number of buffer cycles = %d\n", i);
+    printf("Number of buffer segments = %d\n", i);
 
     if(recieved_bytes < 0)
     {
         printf("\n Could not read recived bytes\n");
     }
 
-    printf("File recived and saves as recieved_file.mp4\n");
+    printf("File received and saved as recieved_file.mp4\n");
+
+    // close the socket
+    close(sock_fd);
+    printf("Socket closed\n");
+
+    // closee filee
+    fclose(file_pointer);
+    printf("File closed\n");
+
+
+
     return 0;
 
 }
