@@ -98,15 +98,24 @@ int main(){
 				printf("Read error.\n");
 			}
 
+			// break means end of file reached
 			break;
+
 
 		}
 
 	}
 
+	// close file
+	fclose(file_pointer);
+	// close connection and socket when file end reached
+	close(new_sock);
+	close(sock_fd);
+	
 	printf("File sent successfully.\n");
 
-	fclose(file_pointer);
+	
+
 
 	return 0;
 

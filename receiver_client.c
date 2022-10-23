@@ -45,6 +45,7 @@ int main(){
     int recieved_bytes = 0;
     char recv_buff[1024];
     memset(recv_buff, '0', sizeof(recv_buff));
+    // open new file
     file_pointer = fopen("received_file.mp4", "ab");
     if(NULL == file_pointer)
     {
@@ -54,10 +55,14 @@ int main(){
 
     // recieve in 128 bits chunks
     int i = 0 ;
+
+    // when read() <= 0 then EOF has been reached
     while((recieved_bytes = read(sock_fd, recv_buff, 1024)) > 0)
     {   i++;
         fwrite(recv_buff, 1,recieved_bytes,file_pointer);
     }
+
+    // number of segments recieved
     printf("Number of buffer cycles = %d\n", i);
 
     if(recieved_bytes < 0)
